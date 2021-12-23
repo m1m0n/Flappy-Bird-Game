@@ -2,6 +2,7 @@ PImage bg, bird,bottom_pipe,top_pipe;
 int bgx, bgy, kx, ky,vky,g;
 int[] pipeX, pipeY;
 boolean game_state;
+
 void setup() {
   size(800, 620);
   bg = loadImage("../images/3.png");
@@ -10,12 +11,13 @@ void setup() {
   top_pipe = loadImage("../images/top_pipe.png");
   kx = 100;
   ky = 50;
-  g = 1;
+  g = 1; // speed of downward acceleration
   
   pipeX = new int[5];
   pipeY = new int[pipeX.length];
   
   for(int i = 0 ; i < pipeX.length ;++i ){
+    // let the bird warm up and the pipes not start from the begining
     pipeX[i] = width + 200*i;
     pipeY[i] = (int)random(-350,0);
   }
@@ -32,15 +34,16 @@ void draw() {
     text("YOU LOSE",50,100);
 
   }
-
-  
 }
 
 void set_pipes(){
   for(int i = 0 ; i < pipeX.length ;i++ ){
+      // Draw the pipes
        image(top_pipe,pipeX[i],pipeY[i]);
        image(bottom_pipe, pipeX[i],pipeY[i]+680);
-       pipeX[i]-=4;
+       // let the pipes move toward the bird
+       pipeX[i]-=4; //speed of pipes
+       // redraw the pipes again
        if(pipeX[i] < -200){
          pipeX[i] = width;
        }
@@ -65,15 +68,17 @@ void bird(){
 }
 
 void mousePressed(){
-    vky = -15;
+    vky = -15;// bird jumps up when the mouse is clicked
 }
 
 void set_background() {
 
   image(bg, bgx, bgy);
+  // redraw the background
   image(bg, bgx + bg.width, bgy);
+  // Animation the background
   bgx = bgx - 2;
   if (bgx < -bg.width) {
-    bgx = 0;
+    bgx = 0; // reset it once the first image is done
   }
 }
