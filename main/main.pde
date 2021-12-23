@@ -1,5 +1,5 @@
-//PShape fly;
-PImage bg, bird,bottom_pipe,top_pipe;
+PFont f;
+PImage bg, bird,bottom_pipe,top_pipe,gameOver;
 int bgx, bgy, kx, ky,vky,g;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
@@ -11,6 +11,9 @@ void setup() {
   bird = loadImage("../images/bird.png");
   bottom_pipe = loadImage("../images/bottom_pipeNewCropped.png");
   top_pipe = loadImage("../images/top_pipeNewCropped .png");
+  gameOver= loadImage("../images/gameOver.png");
+  f = loadFont("AdobeArabic-Bold-60.vlw");
+  textFont(f);
   //fly = loadShape("../images/fly.svg");
   kx = 100;
   ky = 50;
@@ -22,7 +25,7 @@ void setup() {
   
   for(int i = 0 ; i < pipeX.length ;i++ ){
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
-    pipeY[i] = (int)random(-400,0);
+    pipeY[i] = (int)random(-300,0);
   }
 }
 
@@ -32,8 +35,7 @@ void draw() {
     set_pipes();
     bird(); 
   }else{
-    textSize(60);
-    text("YOU LOSE",  width/2, height/2);
+     gameOver();
 
  }
 }
@@ -45,14 +47,13 @@ void bird(){
   ky = ky + vky;
   vky = vky + g;
   if(ky > height || ky < 0){
-    textSize(32);
-    text("You Died!",20,34);
+     gameOver();
     game_state = true;
   }
 }
 
 void mousePressed(){
-    vky = -10;
+    vky = -13;
   //function is called once after every time a mouse button is pressed.
 }
 
@@ -86,4 +87,9 @@ void set_pipes(){
        }
   }    
 
+}
+void gameOver(){
+stroke(5);
+    fill (247,114,114);
+    text("Game Over",300,400);
 }
