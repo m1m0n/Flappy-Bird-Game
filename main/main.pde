@@ -1,6 +1,7 @@
 PImage bg, bird,bottom_pipe,top_pipe;
 int bgx, bgy, kx, ky,vky,g;
 int[] pipeX, pipeY;
+boolean game_state;
 void setup() {
   size(800, 620);
   bg = loadImage("../images/3.png");
@@ -21,8 +22,21 @@ void setup() {
 }
 
 void draw() {
-  set_background();
-  bird();
+  if (!game_state){
+    set_background();
+    set_pipes();
+    bird(); 
+  }else{
+    
+    textSize(32);
+    text("YOU LOSE",50,100);
+
+  }
+
+  
+}
+
+void set_pipes(){
   for(int i = 0 ; i < pipeX.length ;i++ ){
        image(top_pipe,pipeX[i],pipeY[i]);
        image(bottom_pipe, pipeX[i],pipeY[i]+680);
@@ -30,15 +44,24 @@ void draw() {
        if(pipeX[i] < -200){
          pipeX[i] = width;
        }
-       
-       
-  }
+       // check for collision
+       if(kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width){
+         if(!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + top_pipe.height +680 - top_pipe.height))
+         game_state = true;
+       }
+  }    
+
 }
 
 void bird(){
   image(bird, kx, ky);
   ky = ky + vky;
   vky = vky + g;
+  if(ky > height || ky < 0){
+    textSize(32);
+    text("You Died!",20,34);
+    game_state = true;
+  }
 }
 
 void mousePressed(){
