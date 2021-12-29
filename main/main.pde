@@ -1,3 +1,5 @@
+import processing.sound.*;
+SoundFile jumpSound,backSound,hit,bravo;
 PFont f;
 PImage bg, bird,bottom_pipe,top_pipe,gameOver;
 int bgx, bgy, kx, ky,vky,g,score;
@@ -7,6 +9,13 @@ float[] pipeX, pipeY; // two arrays for pipes
 int game_state;
 void setup() {
   size(1000,825);
+  
+    // sounds 
+  jumpSound = new SoundFile(this,"../sound/jumpy.mp3");
+  backSound = new SoundFile(this,"../sound/forest.wav");
+  hit = new SoundFile(this,"../sound/hit.wav");
+  bravo = new SoundFile(this,"../sound/bravoo_3leek.mp3");
+  
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
   bottom_pipe = loadImage("../images/bottom_pipeNewCropped.png");
@@ -14,7 +23,7 @@ void setup() {
   gameOver= loadImage("../images/gameOver.png");
   f = loadFont("AdobeArabic-Bold-60.vlw");
   textFont(f);
-  //fly = loadShape("../images/fly.svg");
+ 
   kx = 100;
   ky = 50;
   g = 1;
@@ -28,6 +37,7 @@ void setup() {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300,0);
   }
+  backSound.loop();
 }
 
 void draw() {
@@ -39,16 +49,16 @@ void draw() {
     set_pipes();
     bird();
     set_score();
+    
+  }else if(score % 2 == 0){
+    bravo.play();
+   noLoop();
   }else{
      gameOver();
 
  }
 }
 
-void menu(){
-
-
-}
 void start_screen(){
   image(bg,0,0);
   textSize(40);
@@ -108,8 +118,10 @@ void bird(){
 }
 
 void mousePressed(){
-    vky = -13;
   //function is called once after every time a mouse button is pressed.
+    vky = -13;
+    jumpSound.play();  
+  
 }
 
 void set_background() {
@@ -147,7 +159,7 @@ void set_pipes(){
 
 }
 void gameOver(){
-stroke(5);
+    stroke(5);
     fill (247,114,114);
     text("Game Over",300,400);
 }
