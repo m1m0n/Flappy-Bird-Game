@@ -44,15 +44,55 @@ void draw() {
 
  }
 }
+
+void menu(){
+
+
+}
 void start_screen(){
   image(bg,0,0);
   textSize(40);
-  text("Welcome to Flappy Bird!",50,100);
-  text("Click The Mouse to Begin...",50,200);
-  if(mousePressed){
-    ky = height / 2;
-    game_state = 0;
+  fill(255);
+  text("Welcome to Flappy Bird!",150,100);
+  text("Play",420,300);
+  text("Rules", 420,400);
+  text("Exit",420,500);
+  
+  if(mouseX > 420 && mouseX < 420 + 110 && mouseY > 250 && mouseY < 250+70){
+    fill(102, 178, 255);
+    text("Play", 420, 300);
+    if(mousePressed){
+      ky = height /2;
+      game_state = 0;
+    }
   }
+  
+  if(mouseX > 420 && mouseX < 420+140 && mouseY > 350 && mouseY < 350+70){
+    fill(102, 178, 255);
+    text("Rules", 420, 400);
+    if(mousePressed){
+      show_rules();
+      
+    }
+  }
+  
+  if(mouseX > 420 && mouseX < 420+110 && mouseY > 450 && mouseY < 450+70){
+    fill(102, 178, 255);
+    text("Exit", 420, 500);
+    if(mousePressed){
+      exit();
+    }
+  }
+}
+
+void show_rules(){
+  image(bg,0,0);
+  textSize(40);
+  fill(255);
+  text("Welcome to Flappy Bird!",150,100);
+  text("Dummy Fucking Rules!!",200,300);
+  
+  
 }
 void bird(){
   image(bird, kx, ky);
