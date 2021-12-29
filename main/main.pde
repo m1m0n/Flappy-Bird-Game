@@ -1,10 +1,10 @@
 PFont f;
 PImage bg, bird,bottom_pipe,top_pipe,gameOver;
-int bgx, bgy, kx, ky,vky,g;
+int bgx, bgy, kx, ky,vky,g,score;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
 float[] pipeX, pipeY; // two arrays for pipes 
-boolean game_state;
+int game_state;
 void setup() {
   size(1000,825);
   bg = loadImage("../images/trial.png");
@@ -18,6 +18,7 @@ void setup() {
   kx = 100;
   ky = 50;
   g = 1;
+  game_state = -1;
 
   pipeX = new float[5];
   pipeY = new float[pipeX.length];
@@ -30,14 +31,28 @@ void setup() {
 }
 
 void draw() {
-  if (!game_state){
+  
+  if (game_state == -1){
+    start_screen();
+  }else if (game_state == 0){
     set_background();
     set_pipes();
-    bird(); 
+    bird();
+    set_score();
   }else{
      gameOver();
 
  }
+}
+void start_screen(){
+  image(bg,0,0);
+  textSize(40);
+  text("Welcome to Flappy Bird!",50,100);
+  text("Click The Mouse to Begin...",50,200);
+  if(mousePressed){
+    ky = height / 2;
+    game_state = 0;
+  }
 }
 void bird(){
   image(bird, kx, ky);
@@ -48,7 +63,7 @@ void bird(){
   vky = vky + g;
   if(ky > height || ky < 0){
      gameOver();
-    game_state = true;
+    game_state = 1;
   }
 }
 
@@ -75,16 +90,19 @@ void set_pipes(){
      
        // let the pipes move toward the bird
 
-       pipeX[i]-=4; //speed of pipes
+       pipeX[i] -= 2; //speed of pipes
        // redraw the pipes again
        if(pipeX[i] < -200){
          pipeX[i] = width;
        }
        // check for collision
        if(kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width){
-         if(!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height)))
-         game_state = true;
-       }
+         if(!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))){
+           game_state = 1;
+         } else if(kx == pipeX[i] || kx == pipeX[i]+1){
+           score++;
+         }
+       } 
   }    
 
 }
@@ -92,4 +110,10 @@ void gameOver(){
 stroke(5);
     fill (247,114,114);
     text("Game Over",300,400);
+}
+
+void set_score(){
+  fill(255);
+  textSize(32);
+  text("Score : " + score, width - 200, 50);
 }
