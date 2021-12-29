@@ -116,14 +116,14 @@ void show_levels() {
   textSize(40);
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
-  text("Easy", 420, 300);
-  text("Medium", 420, 400);
-  text("Hard", 420, 500);
+  text("Easy", 420, 350);
+  text("Medium", 420, 450);
+  text("Hard", 420, 550);
   text("Back", 120, 700);
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 250 && mouseY < 250+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 300 && mouseY < 300+70) {
     fill(102, 178, 255);
-    text("Easy", 420, 300);
+    text("Easy", 420, 350);
     if (mousePressed) {
       pipe_speed = 2;
       ky = height /2;
@@ -132,9 +132,9 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+200 && mouseY > 350 && mouseY < 350+70) {
+  if (mouseX > 420 && mouseX < 420+200 && mouseY > 400 && mouseY < 400+70) {
     fill(102, 178, 255);
-    text("Medium", 420, 400);
+    text("Medium", 420, 450);
     if (mousePressed) {
       pipe_speed = 4;
       ky = height /2;
@@ -143,9 +143,9 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 450 && mouseY < 450+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 500 && mouseY < 500+70) {
     fill(102, 178, 255);
-    text("Hard", 420, 500);
+    text("Hard", 420, 550);
     if (mousePressed) {
       pipe_speed = 6;
       ky = height /2;
@@ -240,7 +240,7 @@ void gameOver() {
 }
 
 void restart() {
-  game_state = -1;
+  //game_state = -1;
   score = 0;
   kx = 100;
   ky = 50;
