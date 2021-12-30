@@ -429,5 +429,5 @@ void restart() {
 void set_score() {
   fill(255);
   textSize(32);
-  text("Score : " + score, width - 200, 50);
+  text("Score : " + score, 25, 50);
 }
