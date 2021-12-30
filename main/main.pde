@@ -90,9 +90,7 @@ void draw() {
     set_score();
     callWinter();
   } else if (game_state == 3) {
-
-    initSummer();
-
+    //initSummer();
     if (score % 5 != 0) {
       bravo.loop();
     }
@@ -100,7 +98,7 @@ void draw() {
     set_pipes();
     bird();
     set_score();
-    callSummer();
+    //callSummer();
   } else if (game_state == 4) {
     show_levels();
   } else if (game_state == 5) {
@@ -108,9 +106,9 @@ void draw() {
   } else if (game_state == 6) {
     show_modes();
   } else {
+    hit.play();
     gameOver();
     exit();
-    bravo.stop();
   }
 }
 
@@ -375,29 +373,30 @@ void callWinter() {
   }
 }
 
-void initSummer() {
-  //birdS = new SoundFile(this, "../sound/bird.mp3");
-  //beachSound = new SoundFile(this, "../sound/beach.mp3");
-  //birdS.play();
-  //beachSound.play();
-  sBack = loadImage("../images/summerBack.png");  
-  bg = sBack;
-  sun = loadImage("../images/sun3.png");
-}
-void callSummer() {
-  pushMatrix();
-  translate (950, 70);
-  rotate(sunAngle);
-  image(sun, -50, -50, 100, 100);
-  sunAngle = sunAngle + 0.02;
-  popMatrix();
-}
+//void initSummer() {
+//  //birdS = new SoundFile(this, "../sound/bird.mp3");
+//  //beachSound = new SoundFile(this, "../sound/beach.mp3");
+//  //birdS.play();
+//  //beachSound.play();
+//  sBack = loadImage("../images/summerBack.png");  
+//  bg = sBack;
+//  sun = loadImage("../images/sun3.png");
+//}
+//void callSummer() {
+//  pushMatrix();
+//  translate (950, 70);
+//  rotate(sunAngle);
+//  image(sun, -50, -50, 100, 100);
+//  sunAngle = sunAngle + 0.02;
+//  popMatrix();
+//}
 
 void gameOver() {
   stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 400);
   text("Your Score is : " + score, 300, 500);
+  
 }
 
 void restart() {
