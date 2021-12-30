@@ -19,7 +19,7 @@ PImage snow, winter_bg;
 
 PFont f;
 PImage bg, bird, bottom_pipe, top_pipe, gameOver;
-int bgx, bgy, kx, ky, vky, g, score, pipe_speed,step;
+int bgx, bgy, kx, ky, vky, g, score, pipe_speed, step,word_height;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
 float[] pipeX, pipeY; // two arrays for pipes 
@@ -53,6 +53,7 @@ void setup() {
   game_state = -1;
   snowAngle = 0.0;   
   step = 1;
+  word_height = 55;
 
 
   pipeX = new float[5];
@@ -170,7 +171,7 @@ void start_screen() {
   text("Rules", 420, 600);
   text("Exit", 420, 700);
 
-  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 250 && mouseY < 250+70) {
+  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 250 && mouseY < 250+word_height) {
     fill(102, 178, 255);
     text("Play", 420, 300);
     if (mousePressed) {
@@ -180,7 +181,7 @@ void start_screen() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 350 && mouseY < 350+70) {
+  if (mouseX > 420 && mouseX < 420+150 && mouseY > 350 && mouseY < 350+word_height) {
     fill(102, 178, 255);
     text("Levels", 420, 400);
     if (mousePressed) {
@@ -188,7 +189,7 @@ void start_screen() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+110 && mouseY > 550 && mouseY < 550+70) {
+  if (mouseX > 420 && mouseX < 420+150 && mouseY > 550 && mouseY < 550+word_height) {
     fill(102, 178, 255);
     text("Rules", 420, 600);
     if (mousePressed) {
@@ -197,7 +198,7 @@ void start_screen() {
   }
 
 
-  if (mouseX > 420 && mouseX < 520+140 && mouseY > 450 && mouseY < 450+70) {
+  if (mouseX > 420 && mouseX < 520+140 && mouseY > 450 && mouseY < 450+word_height) {
     fill(102, 178, 255);
     text("Modes", 420, 500);
     if (mousePressed) {
@@ -205,7 +206,7 @@ void start_screen() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 650 && mouseY< 650+70) {
+  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 650 && mouseY< 650+word_height) {
     fill(102, 178, 255);
     text("Exit", 420, 700);
     if (mousePressed) {
@@ -220,11 +221,11 @@ void show_levels() {
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
   text("Easy", 420, 300);
-  text("Medium", 420, 450);
-  text("Hard", 420, 600);
-  text("Back", 120, 700);
+  text("Medium", 420, 500);
+  text("Hard", 420, 700);
+  text("Back", 150, 700);
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 250 && mouseY < 250+70) {
+  if (mouseX > 420 && mouseX < 420+110 && mouseY > 250 && mouseY < 250+word_height) {
     fill(102, 178, 255);
     text("Easy", 420, 300);
     if (mousePressed) {
@@ -236,9 +237,9 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+200 && mouseY > 400 && mouseY < 400+70) {
+  if (mouseX > 420 && mouseX < 420+215 && mouseY > 450 && mouseY < 450+word_height) {
     fill(102, 178, 255);
-    text("Medium", 420, 450);
+    text("Medium", 420, 500);
     if (mousePressed) {
       pipe_speed =4 ;
       step = 2;
@@ -248,9 +249,9 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 550 && mouseY < 550+70) {
+  if (mouseX > 420 && mouseX < 420+135 && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
-    text("Hard", 420, 600);
+    text("Hard", 420, 700);
     if (mousePressed) {
       pipe_speed = 5;
       step = 2;
@@ -260,9 +261,49 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 120 && mouseX < 120+140 && mouseY > 650 && mouseY < 650+70) {
+  if (mouseX > 150 && mouseX < 150+125 && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
-    text("Back", 120, 700);
+    text("Back", 150, 700);
+    if (mousePressed) {
+      game_state = -1;
+    }
+  }
+}
+
+void show_modes() {
+  image(bg, 0, 0);
+  textSize(40);
+  fill(255);
+  text("Welcome to Flappy Bird!", 150, 100);
+  text("Winter", 420, 400);
+  text("Summer", 420, 600);
+  text("Back", 150, 750);
+
+  if (mouseX > 420 && mouseX < 420+180 && mouseY > 350 && mouseY < 350+word_height) {
+    fill(102, 178, 255);
+    text("Winter", 420, 400);
+    if (mousePressed) {
+      game_state = 2; // Winter Mode
+      pipe_speed = 2;
+      ky = height /2;
+      kx = 50 ;
+    }
+  }
+
+  if (mouseX > 420 && mouseX < 420+215 && mouseY > 550 && mouseY < 550+word_height) {
+    fill(102, 178, 255);
+    text("Summer", 420, 600);
+    if (mousePressed) {
+      pipe_speed = 2;
+      ky = height /2;
+      kx = 50 ;
+      game_state = 3; // Summer Mode
+    }
+  }
+
+  if (mouseX > 150 && mouseX < 150+125 && mouseY > 700 && mouseY < 700+word_height) {
+    fill(102, 178, 255);
+    text("Back", 150, 750);
     if (mousePressed) {
       game_state = -1;
     }
@@ -275,63 +316,11 @@ void show_rules() {
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
   text("Dummy Fucking Rules!!", 200, 300);
-  text("Back", 120, 700);
+  text("Back", 150, 700);
 
-  if (mouseX > 120 && mouseX < 120+140 && mouseY > 650 && mouseY < 650+70) {
+  if (mouseX > 150 && mouseX < 150+1 && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
-    text("Back", 120, 700);
-    if (mousePressed) {
-      game_state = -1;
-    }
-  }
-}
-
-void show_modes() {
-  image(bg, 0, 0);
-  textSize(40);
-  fill(255);
-  text("Welcome to Flappy Bird!", 150, 100);
-  text("Normal", 420, 300);
-  text("Winter", 420, 450);
-  text("Summer", 420, 600);
-  text("Back", 120, 700);
-
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 250 && mouseY < 250+70) {
-    fill(102, 178, 255);
-    text("Normal", 420, 300);
-    if (mousePressed) {
-      pipe_speed = 2;
-      ky = height /2;
-      kx = 50 ;
-      game_state = 0;
-    }
-  }
-
-  if (mouseX > 420 && mouseX < 420+200 && mouseY > 400 && mouseY < 400+70) {
-    fill(102, 178, 255);
-    text("Winter", 420, 450);
-    if (mousePressed) {
-      game_state = 2; // Winter Mode
-      pipe_speed = 2;
-      ky = height /2;
-      kx = 50 ;
-    }
-  }
-
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 550 && mouseY < 550+70) {
-    fill(102, 178, 255);
-    text("Summer", 420, 600);
-    if (mousePressed) {
-      pipe_speed = 2;
-      ky = height /2;
-      kx = 50 ;
-      game_state = 3; // Summer Mode
-    }
-  }
-
-  if (mouseX > 120 && mouseX < 120+140 && mouseY > 650 && mouseY < 650+70) {
-    fill(102, 178, 255);
-    text("Back", 120, 700);
+    text("Back", 150, 700);
     if (mousePressed) {
       game_state = -1;
     }
