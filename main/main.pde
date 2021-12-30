@@ -217,14 +217,14 @@ void show_levels() {
   textSize(40);
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
-  text("Easy", 420, 350);
+  text("Easy", 420, 300);
   text("Medium", 420, 450);
-  text("Hard", 420, 550);
+  text("Hard", 420, 600);
   text("Back", 120, 700);
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 300 && mouseY < 300+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 250 && mouseY < 250+70) {
     fill(102, 178, 255);
-    text("Easy", 420, 350);
+    text("Easy", 420, 300);
     if (mousePressed) {
       pipe_speed = 2;
       ky = height /2;
@@ -244,9 +244,9 @@ void show_levels() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 500 && mouseY < 500+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 550 && mouseY < 550+70) {
     fill(102, 178, 255);
-    text("Hard", 420, 550);
+    text("Hard", 420, 600);
     if (mousePressed) {
       pipe_speed = 6;
       ky = height /2;
@@ -286,14 +286,14 @@ void show_modes() {
   textSize(40);
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
-  text("Normal", 420, 350);
+  text("Normal", 420, 300);
   text("Winter", 420, 450);
-  text("Summer", 420, 550);
+  text("Summer", 420, 600);
   text("Back", 120, 700);
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 300 && mouseY < 300+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 250 && mouseY < 250+70) {
     fill(102, 178, 255);
-    text("Normal", 420, 350);
+    text("Normal", 420, 300);
     if (mousePressed) {
       pipe_speed = 2;
       ky = height /2;
@@ -313,9 +313,9 @@ void show_modes() {
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+140 && mouseY > 500 && mouseY < 500+70) {
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 550 && mouseY < 550+70) {
     fill(102, 178, 255);
-    text("Summer", 420, 550);
+    text("Summer", 420, 600);
     if (mousePressed) {
       pipe_speed = 2;
       ky = height /2;
@@ -379,8 +379,8 @@ void set_pipes() {
     if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
       if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))) {
         game_state = 1;
-      } else if (kx == pipeX[i] || kx == pipeX[i]+1) {
-        score++;
+      } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
+        score+=(pipe_speed/2);
       }
     }
   }
