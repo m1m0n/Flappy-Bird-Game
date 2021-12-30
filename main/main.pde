@@ -1,5 +1,20 @@
 import processing.sound.*;
-SoundFile jumpSound, backSound, hit, bravo;
+SoundFile jumpSound, backSound, hit, bravo, sSound;
+
+// Summer variable
+PImage sBack;
+PImage sun;
+float sunAngle;
+SoundFile beachSound, birdS;
+
+// SNOW VARIABLES
+float snowY[];
+float snowX[];
+
+float snowAngle;
+float Ysnow = 10;
+PImage snow, winter_bg;
+
 PFont f;
 PImage bg, bird, bottom_pipe, top_pipe, gameOver;
 int bgx, bgy, kx, ky, vky, g, score, pipe_speed;
@@ -14,14 +29,19 @@ void setup() {
   // sounds 
   jumpSound = new SoundFile(this, "../sound/jumpy.mp3");
   backSound = new SoundFile(this, "../sound/forest.wav");
-  hit = new SoundFile(this, "../sound/hit.wav");
+  hit = new SoundFile(this, "../sound/gameover.mp3");
   bravo = new SoundFile(this, "../sound/bravoo_3leek.mp3");
+  //sSound = new SoundFile(this, "../sound/snow.mp3");
 
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
   bottom_pipe = loadImage("../images/bottom_pipeNewCropped.png");
   top_pipe = loadImage("../images/top_pipeNewCropped .png");
   gameOver= loadImage("../images/gameOver.png");
+
+  winter_bg= loadImage("../images/winterBackround.png");
+  snow = loadImage("../images/snow.png");
+
   f = loadFont("AdobeArabic-Bold-60.vlw");
   textFont(f);
 
@@ -30,6 +50,8 @@ void setup() {
   ky = 50;
   g = 1;
   game_state = -1;
+  snowAngle = 0.0;    
+
 
   pipeX = new float[5];
   pipeY = new float[pipeX.length];
@@ -39,8 +61,9 @@ void setup() {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300, 0);
   }
+  // winter {define all the variables of winter }
+
   backSound.loop();
-  restart();
 }
 
 void draw() {
@@ -56,9 +79,34 @@ void draw() {
     bird();
     set_score();
   } else if (game_state == 2) {
-    show_levels();
+    initWinter();
+
+    if (score % 5 != 0) {
+      bravo.loop();
+    }
+    set_background();
+    set_pipes();
+    bird();
+    set_score();
+    callWinter();
   } else if (game_state == 3) {
+
+    initSummer();
+
+    if (score % 5 != 0) {
+      bravo.loop();
+    }
+    set_background();
+    set_pipes();
+    bird();
+    set_score();
+    callSummer();
+  } else if (game_state == 4) {
+    show_levels();
+  } else if (game_state == 5) {
     show_rules();
+  } else if (game_state == 6) {
+    show_modes();
   } else {
     gameOver();
     exit();
@@ -73,8 +121,9 @@ void start_screen() {
   text("Welcome to Flappy Bird!", 150, 100);
   text("Play", 420, 300);
   text("Levels", 420, 400);
-  text("Rules", 420, 500);
-  text("Exit", 420, 600);
+  text("Modes", 420, 500);
+  text("Rules", 420, 600);
+  text("Exit", 420, 700);
 
   if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 250 && mouseY < 250+70) {
     fill(102, 178, 255);
@@ -90,21 +139,30 @@ void start_screen() {
     fill(102, 178, 255);
     text("Levels", 420, 400);
     if (mousePressed) {
-      game_state = 2; // Levels Panel
-    }
-  }
-
-  if (mouseX > 420 && mouseX < 520+140 && mouseY > 450 && mouseY < 450+70) {
-    fill(102, 178, 255);
-    text("Rules", 420, 500);
-    if (mousePressed) {
-      game_state = 3; // Rules Panel
+      game_state = 4; // Levels Panel
     }
   }
 
   if (mouseX > 420 && mouseX < 420+110 && mouseY > 550 && mouseY < 550+70) {
     fill(102, 178, 255);
-    text("Exit", 420, 600);
+    text("Rules", 420, 600);
+    if (mousePressed) {
+      game_state = 5; // Rules Panel
+    }
+  }
+
+
+  if (mouseX > 420 && mouseX < 520+140 && mouseY > 450 && mouseY < 450+70) {
+    fill(102, 178, 255);
+    text("Modes", 420, 500);
+    if (mousePressed) {
+      game_state = 6; // Modes Panel
+    }
+  }
+
+  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 650 && mouseY< 650+70) {
+    fill(102, 178, 255);
+    text("Exit", 420, 700);
     if (mousePressed) {
       exit();
     }
@@ -180,6 +238,58 @@ void show_rules() {
   }
 }
 
+void show_modes() {
+  image(bg, 0, 0);
+  textSize(40);
+  fill(255);
+  text("Welcome to Flappy Bird!", 150, 100);
+  text("Normal", 420, 350);
+  text("Winter", 420, 450);
+  text("Summer", 420, 550);
+  text("Back", 120, 700);
+
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 300 && mouseY < 300+70) {
+    fill(102, 178, 255);
+    text("Normal", 420, 350);
+    if (mousePressed) {
+      pipe_speed = 2;
+      ky = height /2;
+      kx = 50 ;
+      game_state = 0;
+    }
+  }
+
+  if (mouseX > 420 && mouseX < 420+200 && mouseY > 400 && mouseY < 400+70) {
+    fill(102, 178, 255);
+    text("Winter", 420, 450);
+    if (mousePressed) {
+      game_state = 2; // Winter Mode
+      pipe_speed = 2;
+      ky = height /2;
+      kx = 50 ;
+    }
+  }
+
+  if (mouseX > 420 && mouseX < 420+140 && mouseY > 500 && mouseY < 500+70) {
+    fill(102, 178, 255);
+    text("Summer", 420, 550);
+    if (mousePressed) {
+      pipe_speed = 2;
+      ky = height /2;
+      kx = 50 ;
+      game_state = 3; // Summer Mode
+    }
+  }
+
+  if (mouseX > 120 && mouseX < 120+140 && mouseY > 650 && mouseY < 650+70) {
+    fill(102, 178, 255);
+    text("Back", 120, 700);
+    if (mousePressed) {
+      game_state = -1;
+    }
+  }
+}
+
 void bird() {
   image(bird, kx, ky);
   /* i make two equation becuase Vky will change when i
@@ -232,6 +342,57 @@ void set_pipes() {
     }
   }
 }
+
+void initWinter() {
+  //sSound.loop();
+  bg = winter_bg;
+  snowY = new float[20];
+  snowX= new float[20];
+  // assign different y coordinates for snow
+
+  for (int i=0; i<20; i++) {
+    snowY[i] = random(0, height);
+  }
+
+  // assign x coordinates for snow 
+  snowX[0] =5;
+  for (int i=1; i<=19; i++) {
+    snowX[i]= snowX[i-1]+50;
+  }
+}
+// this function is used to call the winter
+void callWinter() {
+  for (int i=0; i<20; i++) {
+    pushMatrix();
+    translate(snowX[i], snowY[i]);
+    rotate(snowAngle);
+    image(snow, -10, -10, 20, 20);
+    snowAngle = snowAngle + 0.1;
+    popMatrix();
+    snowY[i] = snowY[i]+random(0, 6);
+    if (snowY[i]>height)
+      snowY[i] = 0;
+  }
+}
+
+void initSummer() {
+  //birdS = new SoundFile(this, "../sound/bird.mp3");
+  //beachSound = new SoundFile(this, "../sound/beach.mp3");
+  //birdS.play();
+  //beachSound.play();
+  sBack = loadImage("../images/summerBack.png");  
+  bg = sBack;
+  sun = loadImage("../images/sun3.png");
+}
+void callSummer() {
+  pushMatrix();
+  translate (950, 70);
+  rotate(sunAngle);
+  image(sun, -50, -50, 100, 100);
+  sunAngle = sunAngle + 0.02;
+  popMatrix();
+}
+
 void gameOver() {
   stroke(5);
   fill (247, 114, 114);
