@@ -1,5 +1,7 @@
 import processing.sound.*;
-SoundFile jumpSound, backSound, hit, bravo, sSound;
+SoundFile jumpSound, backSound, hit, bravo, snowSound ;
+// 
+boolean winterSound = false, summerSound= false;
 
 // Summer variable
 PImage sBack;
@@ -31,7 +33,7 @@ void setup() {
   backSound = new SoundFile(this, "../sound/forest.wav");
   hit = new SoundFile(this, "../sound/gameover.mp3");
   bravo = new SoundFile(this, "../sound/bravoo_3leek.mp3");
-  //sSound = new SoundFile(this, "../sound/snow.mp3");
+ 
 
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
@@ -39,8 +41,7 @@ void setup() {
   top_pipe = loadImage("../images/top_pipeNewCropped .png");
   gameOver= loadImage("../images/gameOver.png");
 
-  winter_bg= loadImage("../images/winterBackround.png");
-  snow = loadImage("../images/snow.png");
+  
 
   f = loadFont("AdobeArabic-Bold-60.vlw");
   textFont(f);
@@ -61,9 +62,37 @@ void setup() {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300, 0);
   }
-  // winter {define all the variables of winter }
+// Winter Varibales
+  winter_bg= loadImage("../images/winterBackround.png");
+  snow = loadImage("../images/snow.png");
+  snowSound = new SoundFile(this, "../sound/snow.mp3");
+  snowSound.play();
+  snowSound.pause();
+  //snowSound.amp(0.5);
+  snowY = new float[20];
+  snowX= new float[20];
+  
+  // assign different y coordinates for snow
+  for (int i=0; i<20; i++) {
+    snowY[i] = random(0, height);
+  }
 
+  // assign x coordinates for snow 
+  snowX[0] =5;
+  for (int i=1; i<=19; i++) {
+    snowX[i]= snowX[i-1]+50;
+  }
+// Summer variables
+//birdS = new SoundFile(this, "../sound/bird.mp3");
+  beachSound = new SoundFile(this, "../sound/beach.mp3");
+  //birdS.play();
+  beachSound.play();
+  beachSound.pause();
+  sBack = loadImage("../images/summerBack.png");  
+  sun = loadImage("../images/sun3.png");
+  
   backSound.loop();
+  
 }
 
 void draw() {
@@ -74,31 +103,47 @@ void draw() {
     if (score % 5 != 0) {
       bravo.loop();
     }
-    set_background();
+    set_background(bg);
     set_pipes();
     bird();
     set_score();
   } else if (game_state == 2) {
-    initWinter();
-
+    //initWinter();
+    if (!winterSound){
+      snowSound.play();
+     beachSound.pause();
+     winterSound = true;
+     summerSound= false;
+    }
+    
+     
+     
     if (score % 5 != 0) {
       bravo.loop();
     }
-    set_background();
+    set_background(winter_bg);
     set_pipes();
     bird();
     set_score();
     callWinter();
   } else if (game_state == 3) {
+    
     //initSummer();
+    if (!summerSound){
+      snowSound.play();
+     beachSound.pause();
+     summerSound = true;
+     winterSound = false;
+    }
+
     if (score % 5 != 0) {
       bravo.loop();
     }
-    set_background();
+    set_background(sBack);
     set_pipes();
     bird();
     set_score();
-    //callSummer();
+    callSummer();
   } else if (game_state == 4) {
     show_levels();
   } else if (game_state == 5) {
@@ -106,9 +151,9 @@ void draw() {
   } else if (game_state == 6) {
     show_modes();
   } else {
-    hit.play();
     gameOver();
     exit();
+    bravo.stop();
   }
 }
 
@@ -307,10 +352,10 @@ void mousePressed() {
   jumpSound.play();
 }
 
-void set_background() {
+void set_background(PImage image) {
 
-  image(bg, bgx, bgy);
-  image(bg, bgx + width, bgy);
+  image(image, bgx, bgy);
+  image(image, bgx + width, bgy);
   bgx = bgx - 2;
   if (bgx < -width) {
     bgx = 0;
@@ -341,23 +386,7 @@ void set_pipes() {
   }
 }
 
-void initWinter() {
-  //sSound.loop();
-  bg = winter_bg;
-  snowY = new float[20];
-  snowX= new float[20];
-  // assign different y coordinates for snow
 
-  for (int i=0; i<20; i++) {
-    snowY[i] = random(0, height);
-  }
-
-  // assign x coordinates for snow 
-  snowX[0] =5;
-  for (int i=1; i<=19; i++) {
-    snowX[i]= snowX[i-1]+50;
-  }
-}
 // this function is used to call the winter
 void callWinter() {
   for (int i=0; i<20; i++) {
@@ -373,30 +402,21 @@ void callWinter() {
   }
 }
 
-//void initSummer() {
-//  //birdS = new SoundFile(this, "../sound/bird.mp3");
-//  //beachSound = new SoundFile(this, "../sound/beach.mp3");
-//  //birdS.play();
-//  //beachSound.play();
-//  sBack = loadImage("../images/summerBack.png");  
-//  bg = sBack;
-//  sun = loadImage("../images/sun3.png");
-//}
-//void callSummer() {
-//  pushMatrix();
-//  translate (950, 70);
-//  rotate(sunAngle);
-//  image(sun, -50, -50, 100, 100);
-//  sunAngle = sunAngle + 0.02;
-//  popMatrix();
-//}
+void callSummer() {
+  pushMatrix();
+  translate (950, 70);
+  rotate(sunAngle);
+  image(sun, -50, -50, 100, 100);
+  sunAngle = sunAngle + 0.02;
+  popMatrix();
+}
 
 void gameOver() {
   stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 400);
   text("Your Score is : " + score, 300, 500);
-  
+  hit.play();
 }
 
 void restart() {
