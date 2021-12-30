@@ -19,7 +19,7 @@ PImage snow, winter_bg;
 
 PFont f;
 PImage bg, bird, bottom_pipe, top_pipe, gameOver;
-int bgx, bgy, kx, ky, vky, g, score, pipe_speed;
+int bgx, bgy, kx, ky, vky, g, score, pipe_speed,step;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
 float[] pipeX, pipeY; // two arrays for pipes 
@@ -51,7 +51,8 @@ void setup() {
   ky = 50;
   g = 1;
   game_state = -1;
-  snowAngle = 0.0;    
+  snowAngle = 0.0;   
+  step = 1;
 
 
   pipeX = new float[5];
@@ -228,6 +229,7 @@ void show_levels() {
     text("Easy", 420, 300);
     if (mousePressed) {
       pipe_speed = 2;
+      step = 2;
       ky = height /2;
       kx = 50 ;
       game_state = 0;
@@ -238,7 +240,8 @@ void show_levels() {
     fill(102, 178, 255);
     text("Medium", 420, 450);
     if (mousePressed) {
-      pipe_speed = 4;
+      pipe_speed =4 ;
+      step = 2;
       ky = height /2;
       kx = 50 ;
       game_state = 0;
@@ -249,7 +252,8 @@ void show_levels() {
     fill(102, 178, 255);
     text("Hard", 420, 600);
     if (mousePressed) {
-      pipe_speed = 6;
+      pipe_speed = 5;
+      step = 2;
       ky = height /2;
       kx = 50 ;
       game_state = 0;
@@ -381,7 +385,7 @@ void set_pipes() {
       if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))) {
         game_state = 1;
       } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
-        score+=(pipe_speed/2);
+        score += 1;
       }
     }
   }
