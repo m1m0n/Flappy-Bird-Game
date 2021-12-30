@@ -33,7 +33,7 @@ void setup() {
   backSound = new SoundFile(this, "../sound/forest.wav");
   hit = new SoundFile(this, "../sound/gameover.mp3");
   bravo = new SoundFile(this, "../sound/bravoo_3leek.mp3");
- 
+
 
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
@@ -41,7 +41,7 @@ void setup() {
   top_pipe = loadImage("../images/top_pipeNewCropped .png");
   gameOver= loadImage("../images/gameOver.png");
 
-  
+
 
   f = loadFont("AdobeArabic-Bold-60.vlw");
   textFont(f);
@@ -62,7 +62,7 @@ void setup() {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300, 0);
   }
-// Winter Varibales
+  // Winter Varibales
   winter_bg= loadImage("../images/winterBackround.png");
   snow = loadImage("../images/snow.png");
   snowSound = new SoundFile(this, "../sound/snow.mp3");
@@ -71,7 +71,7 @@ void setup() {
   //snowSound.amp(0.5);
   snowY = new float[20];
   snowX= new float[20];
-  
+
   // assign different y coordinates for snow
   for (int i=0; i<20; i++) {
     snowY[i] = random(0, height);
@@ -82,17 +82,16 @@ void setup() {
   for (int i=1; i<=19; i++) {
     snowX[i]= snowX[i-1]+50;
   }
-// Summer variables
-//birdS = new SoundFile(this, "../sound/bird.mp3");
+  // Summer variables
+  //birdS = new SoundFile(this, "../sound/bird.mp3");
   beachSound = new SoundFile(this, "../sound/beach.mp3");
   //birdS.play();
   beachSound.play();
   beachSound.pause();
   sBack = loadImage("../images/summerBack.png");  
   sun = loadImage("../images/sun3.png");
-  
+
   backSound.loop();
-  
 }
 
 void draw() {
@@ -109,15 +108,15 @@ void draw() {
     set_score();
   } else if (game_state == 2) {
     //initWinter();
-    if (!winterSound){
+    if (!winterSound) {
       snowSound.play();
-     beachSound.pause();
-     winterSound = true;
-     summerSound= false;
+      beachSound.pause();
+      winterSound = true;
+      summerSound= false;
     }
-    
-     
-     
+
+
+
     if (score % 5 != 0) {
       bravo.loop();
     }
@@ -127,23 +126,25 @@ void draw() {
     set_score();
     callWinter();
   } else if (game_state == 3) {
-    
+
     //initSummer();
-    if (!summerSound){
+    if (!summerSound) {
       snowSound.play();
-     beachSound.pause();
-     summerSound = true;
-     winterSound = false;
+      beachSound.pause();
+      summerSound = true;
+      winterSound = false;
     }
 
     if (score % 5 != 0) {
       bravo.loop();
     }
+    pushMatrix();
     set_background(sBack);
-    set_pipes();
     bird();
-    set_score();
     callSummer();
+    popMatrix();
+    set_pipes();
+    set_score();
   } else if (game_state == 4) {
     show_levels();
   } else if (game_state == 5) {
