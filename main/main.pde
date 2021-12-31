@@ -19,7 +19,7 @@ PImage snow, winter_bg;
 
 PFont f;
 PImage bg, bird, bottom_pipe, top_pipe, gameOver;
-int bgx, bgy, kx, ky, vky, g, score, pipe_speed, step,word_height;
+int bgx, bgy, kx, ky, vky, g, score, pipe_speed, step, word_height;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
 float[] pipeX, pipeY; // two arrays for pipes 
@@ -155,7 +155,10 @@ void draw() {
     show_modes();
   } else {
     gameOver();
-    exit();
+    hit.stop();
+    if (mousePressed) {
+      restart();
+    }
     bravo.stop();
   }
 }
@@ -408,16 +411,28 @@ void callSummer() {
 void gameOver() {
   stroke(5);
   fill (247, 114, 114);
-  text("Game Over!", 350, 400);
-  text("Your Score is : " + score, 300, 500);
+  text("Game Over!", 350, 300);
+  text("Your Score is : " + score, 300, 400);
+  text("Press Mouse Button to Restart.", 150, 500);
   hit.play();
 }
 
 void restart() {
-  //game_state = -1;
+  game_state = -1;
   score = 0;
   kx = 100;
   ky = 50;
+  pipeX = null;
+  pipeY = null;
+
+  pipeX = new float[5];
+  pipeY = new float[pipeX.length];
+  // assign coordinates for every pipe
+
+  for (int i = 0; i < pipeX.length; i++ ) {
+    pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
+    pipeY[i] = (int)random(-300, 0);
+  }
 }
 
 void set_score() {
