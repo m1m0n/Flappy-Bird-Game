@@ -1,5 +1,5 @@
 import processing.sound.*;
-SoundFile jumpSound, backSound, hit, bravo, snowSound ;
+SoundFile jumpSound, backSound, hit, bravo, snowSound, beachSound, birdS;
 int soundState;
 // 
 boolean winterSound = true, summerSound= true;
@@ -8,7 +8,7 @@ boolean winterSound = true, summerSound= true;
 PImage sBack;
 PImage sun;
 float sunAngle;
-SoundFile beachSound, birdS;
+
 
 // SNOW VARIABLES
 float snowY[];
@@ -25,6 +25,8 @@ int bgx, bgy, kx, ky, vky, g, score, pipe_speed, step, word_height;
 // g is the gravity 
 float[] pipeX, pipeY; // two arrays for pipes 
 int game_state;
+
+
 void setup() {
   size(1000, 825);
   frameRate(60);
@@ -71,7 +73,7 @@ void setup() {
   snowSound = new SoundFile(this, "../sound/snow.mp3");
   snowSound.play();
   snowSound.pause();
-  //snowSound.amp(0.5);
+
   snowY = new float[20];
   snowX= new float[20];
 
@@ -86,15 +88,16 @@ void setup() {
     snowX[i]= snowX[i-1]+50;
   }
   // Summer variables
-  //birdS = new SoundFile(this, "../sound/bird.mp3");
+  birdS = new SoundFile(this, "../sound/bird.mp3");
   beachSound = new SoundFile(this, "../sound/beach.mp3");
-  //birdS.play();
+  birdS.play();
+  birdS.pause();
   beachSound.play();
   beachSound.pause();
+  beachSound.amp(0.5);
   sBack = loadImage("../images/summerBack.png");  
   sun = loadImage("../images/sun3.png");
   soundState =0;
-  backSound.loop();
 }
 
 void draw() {
@@ -113,7 +116,6 @@ void draw() {
     soundState =1;
     if (soundState ==1 && winterSound == true) {
       snowSound.play(); 
-      beachSound.pause();
       winterSound = false;
     }
 
@@ -131,8 +133,8 @@ void draw() {
 
     soundState = 2;
     if (soundState == 2 && summerSound == true) {
-      beachSound.pause();
-      snowSound.play();   
+      beachSound.play();
+      birdS.play();  
       summerSound = false;
     }
 
@@ -407,11 +409,12 @@ void callSummer() {
 
 void gameOver() {
   winterSound = true;
- summerSound = true;
- soundState =0;
- snowSound.pause(); 
- beachSound.pause();   
- 
+  summerSound = true;
+  soundState =0;
+  snowSound.pause(); 
+  beachSound.pause();  
+  birdS.pause();
+
   stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 300);
@@ -431,7 +434,7 @@ void gameOver() {
     fill(255);
     text("Restart", 600, 500);
     if (mousePressed) {
-        restart();
+      restart();
     }
   }
   hit.play();
