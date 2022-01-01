@@ -156,9 +156,6 @@ void draw() {
   } else {
     gameOver();
     hit.stop();
-    if (mousePressed) {
-      restart();
-    }
     bravo.stop();
   }
 }
@@ -201,7 +198,7 @@ void start_screen() {
   }
 
 
-  if (mouseX > 420 && mouseX < 520+140 && mouseY > 450 && mouseY < 450+word_height) {
+  if (mouseX > 420 && mouseX < 520+70 && mouseY > 450 && mouseY < 450+word_height) {
     fill(102, 178, 255);
     text("Modes", 420, 500);
     if (mousePressed) {
@@ -414,7 +411,24 @@ void gameOver() {
   fill (247, 114, 114);
   text("Game Over!", 350, 300);
   text("Your Score is : " + score, 300, 400);
-  text("Press Mouse Button to Restart.", 150, 500);
+  text("Exit", 250, 500);
+  text("Restart", 600, 500);
+
+  if (mouseX > 250 && mouseX <250+150 && mouseY > 450 && mouseY < 450+70) {
+    fill(255);
+    text("Exit", 250, 500);
+    if (mousePressed) {
+      exit();
+    }
+  }
+
+  if (mouseX > 600 && mouseX < 600+170 && mouseY > 450 && mouseY < 450+70) {
+    fill(255);
+    text("Restart", 600, 500);
+    if (mousePressed) {
+        restart();
+    }
+  }
   hit.play();
 }
 
