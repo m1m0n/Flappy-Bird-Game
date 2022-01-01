@@ -1,5 +1,6 @@
 import processing.sound.*;
 SoundFile jumpSound, backSound, hit, bravo, snowSound ;
+int soundState;
 // 
 boolean winterSound = false, summerSound= false;
 
@@ -109,12 +110,11 @@ void draw() {
     bird();
     set_score();
   } else if (game_state == 2) {
-    //initWinter();
-    if (!winterSound) {
-      snowSound.play();
+    soundState =1;
+    if (soundState ==1 && winterSound == true) {
+      snowSound.play(); 
       beachSound.pause();
-      winterSound = true;
-      summerSound= false;
+      winterSound = false;
     }
 
 
@@ -129,12 +129,11 @@ void draw() {
     callWinter();
   } else if (game_state == 3) {
 
-    //initSummer();
-    if (!summerSound) {
-      snowSound.play();
+    soundState = 2;
+    if (soundState == 2 && summerSound == true) {
       beachSound.pause();
-      summerSound = true;
-      winterSound = false;
+      snowSound.play();   
+      summerSound = false;
     }
 
     if (score % 5 != 0) {
@@ -407,6 +406,12 @@ void callSummer() {
 }
 
 void gameOver() {
+  winterSound = true;
+ summerSound = true;
+ soundState =0;
+ snowSound.pause(); 
+ beachSound.pause();   
+ 
   stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 300);
