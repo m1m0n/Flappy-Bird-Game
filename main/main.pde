@@ -375,6 +375,7 @@ void set_pipes() {
     // check for collision
     if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
       if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))) {
+        hit.play();
         game_state = 1;
       } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
         score += 1;
