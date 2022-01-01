@@ -2,7 +2,7 @@ import processing.sound.*;
 SoundFile jumpSound, backSound, hit, bravo, snowSound ;
 int soundState;
 // 
-boolean winterSound = false, summerSound= false;
+boolean winterSound = true, summerSound= true;
 
 // Summer variable
 PImage sBack;
@@ -93,7 +93,7 @@ void setup() {
   beachSound.pause();
   sBack = loadImage("../images/summerBack.png");  
   sun = loadImage("../images/sun3.png");
-
+  soundState =0;
   backSound.loop();
 }
 
