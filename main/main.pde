@@ -321,7 +321,7 @@ void show_rules() {
   text("Dummy Fucking Rules!!", 200, 300);
   text("Back", 150, 700);
 
-  if (mouseX > 150 && mouseX < 150+1 && mouseY > 650 && mouseY < 650+word_height) {
+  if (mouseX > 150 && mouseX < 150+125 && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
     text("Back", 150, 700);
     if (mousePressed) {
