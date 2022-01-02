@@ -1,7 +1,6 @@
 import processing.sound.*;
 SoundFile jumpSound, backSound, hit, bravo, snowSound, beachSound, birdS;
 int soundState;
-// 
 boolean winterSound = true, summerSound= true;
 
 // Summer variable
@@ -61,8 +60,8 @@ void setup() {
 
   pipeX = new float[5];
   pipeY = new float[pipeX.length];
-  // assign coordinates for every pipe
 
+  // assign coordinates for every pipe
   for (int i = 0; i < pipeX.length; i++ ) {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300, 0);
@@ -118,8 +117,6 @@ void draw() {
       snowSound.play(); 
       winterSound = false;
     }
-
-
 
     if (score % 5 != 0) {
       bravo.loop();
@@ -350,21 +347,20 @@ void mousePressed() {
 void set_background(PImage image) {
 
   image(image, bgx, bgy);
-  image(image, bgx + width, bgy);
-  bgx = bgx - 2;
-  if (bgx < -width) {
-    bgx = 0;
+  image(image, bgx + bg.width, bgy);
+  bgx = bgx - 2; // Animate the background
+  if (bgx < -bg.width) {
+    bgx = 0; // Reset it once the first image is done
   }
 }
+
 void set_pipes() {
   for (int i = 0; i < pipeX.length; i++ ) {
     // Draw the pipes
-
     image(top_pipe, pipeX[i], pipeY[i]);
     image(bottom_pipe, pipeX[i], pipeY[i]+800);
 
     // let the pipes move toward the bird
-
     pipeX[i] -= pipe_speed; //speed of pipes
     // redraw the pipes again
     if (pipeX[i] < -200) {
@@ -372,7 +368,7 @@ void set_pipes() {
     }
     // check for collision
     if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
-      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))) {
+      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (800 - bird.height))) {
         hit.play();
         game_state = 1;
       } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
