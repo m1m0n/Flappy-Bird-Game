@@ -140,6 +140,7 @@ void draw() {
     if (score % 5 != 0) {
       bravo.loop();
     }
+    // draw the sun behind the pipes 
     pushMatrix();
     set_background(sBack);
     bird();
