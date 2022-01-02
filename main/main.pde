@@ -60,8 +60,8 @@ void setup() {
 
   pipeX = new float[5];
   pipeY = new float[pipeX.length];
-
   // assign coordinates for every pipe
+
   for (int i = 0; i < pipeX.length; i++ ) {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
     pipeY[i] = (int)random(-300, 0);
@@ -117,6 +117,8 @@ void draw() {
       snowSound.play(); 
       winterSound = false;
     }
+
+
 
     if (score % 5 != 0) {
       bravo.loop();
@@ -347,13 +349,12 @@ void mousePressed() {
 void set_background(PImage image) {
 
   image(image, bgx, bgy);
-  image(image, bgx + bg.width, bgy);
+  image(image, bgx + width, bgy);
   bgx = bgx - 2; // Animate the background
-  if (bgx < -bg.width) {
+  if (bgx < -width) {
     bgx = 0; // Reset it once the first image is done
   }
 }
-
 void set_pipes() {
   for (int i = 0; i < pipeX.length; i++ ) {
     // Draw the pipes
