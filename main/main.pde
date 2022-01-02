@@ -422,7 +422,7 @@ void gameOver() {
   text("Exit", 250, 500);
   text("Restart", 600, 500);
 
-  if (mouseX > 250 && mouseX <250+150 && mouseY > 450 && mouseY < 450+70) {
+  if (mouseX > 250 && mouseX <250+85 && mouseY > 450 && mouseY < 450+55) {
     fill(255);
     text("Exit", 250, 500);
     if (mousePressed) {
@@ -430,7 +430,7 @@ void gameOver() {
     }
   }
 
-  if (mouseX > 600 && mouseX < 600+170 && mouseY > 450 && mouseY < 450+70) {
+  if (mouseX > 600 && mouseX < 600+155 && mouseY > 450 && mouseY < 450+50) {
     fill(255);
     text("Restart", 600, 500);
     if (mousePressed) {
