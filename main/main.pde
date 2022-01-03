@@ -307,16 +307,16 @@ void show_rules() {
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
   textSize(20);
-  text("1- If you choose 'Play': you will enter the basic mode and play directly.", 10, 300);
-  text("2- You can choose Easy,Midum or Hard level to play, from 'Levels'.", 10, 350);
-  text("3- Choose weather season (Summer/Winter) that you want, form 'Modes'.", 10, 400);
-  text("4- IF you hits the edges or the pipes, Game overs ", 10, 450);
-  text("5- When you pass a pipe your score increases by 1.", 10, 500);
-  text("6- When you pass 5 pipes your listen 'Bravo 3aleeek'. ", 10, 550);
-  text("7- Choose 'Exit' if you want to close the game. ", 10, 600);
-
-
-
+  text("1- If you choose 'Play': you will enter the basic mode and play directly.", 10, 200);
+  text("2- Click on 'Levels' to choose Easy, Medium or Hard, then choose 'Play'.", 10, 250);
+  text("3- Choose weather season (Summer/Winter) that you want, form 'Modes'.", 10, 300);
+  text("4- If you hits the edges of the screen or the pipes, Game overs ", 10, 350);
+  text("5- When you pass a pipe your score increases by 1.", 10, 400);
+  text("6- When you pass 5 pipes you listen 'Bravo 3aleeek'. ", 10, 450);
+  text("7- Choose 'Exit' if you want to close the game. ", 10, 500);
+  text("8- Choose Back to return to the starting screen. ", 10, 550);
+  
+  textSize(40);
   text("Back", 150, 700);
 
   if (mouseX > 150 && mouseX < 150+125 && mouseY > 650 && mouseY < 650+word_height) {
