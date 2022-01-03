@@ -1,5 +1,3 @@
-
-
 import processing.sound.*;
 SoundFile jumpSound, hit, bravo;
 int soundState;    // it is a flag used to choose sound for summer and for winter 
@@ -42,7 +40,7 @@ void setup() {
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
   bottom_pipe = loadImage("../images/bottom_pipeNewCropped.png");
-  top_pipe = loadImage("../images/top_pipeNewCropped.png");
+  top_pipe = loadImage("../images/top_pipeNewCropped .png");
 
 
 
@@ -212,45 +210,47 @@ void start_screen() {
 }
 
 void show_levels() {
-  int shift = 100;
   image(bg, 0, 0);
   textSize(40);
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
-  text("Easy",   420 + shift, 300);
-  text("Medium", 420 + shift, 500);
-  text("Hard",   420 + shift, 700);
+  text("Easy",   420, 300);
+  text("Medium", 420, 500);
+  text("Hard",   420, 700);
   text("Back", 150, 700);
 
-  if (mouseX > 420 + shift && mouseX < 420 + 110 + shift && mouseY > 250 && mouseY < 250+word_height) {
+  if (mouseX > 420 && mouseX < 420 + 110 && mouseY > 250 && mouseY < 250+word_height) {
     fill(102, 178, 255);
-    text("Easy", 420 + shift, 300);
+    text("Easy", 420, 300);
     if (mousePressed) {
       pipe_speed = 2;
       ky = height /2;
       kx = 50 ;
+      delay(100);
       game_state = -1;
     }
   }
 
-  if (mouseX > 420 + shift&& mouseX < 420 + 215 + shift&& mouseY > 450 && mouseY < 450+word_height) {
+  if (mouseX > 420 && mouseX < 420 + 215 && mouseY > 450 && mouseY < 450+word_height) {
     fill(102, 178, 255);
-    text("Medium", 420 + shift, 500);
+    text("Medium", 420 , 500);
     if (mousePressed) {
       pipe_speed = 4;
       ky = height /2;
       kx = 50 ;
+      delay(100);
       game_state = -1;
     }
   }
 
-  if (mouseX > 420 + shift&& mouseX < 420 + 135 + shift && mouseY > 650 && mouseY < 650+word_height) {
+  if (mouseX > 420 && mouseX < 420 + 135 && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
-    text("Hard", 420 + shift, 700);
+    text("Hard", 420 , 700);
     if (mousePressed) {
-      pipe_speed = 7;
+      pipe_speed = 5;
       ky = height /2;
       kx = 50 ;
+      delay(100);
       game_state = -1;
     }
   }
@@ -421,7 +421,6 @@ void gameOver() {
   summerSound = true;
   soundState =0;
   
-  stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 300);
   text("Your Score is : " + score, 300, 400);
