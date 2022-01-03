@@ -1,3 +1,5 @@
+
+
 import processing.sound.*;
 SoundFile jumpSound, hit, bravo;
 int soundState;    // it is a flag used to choose sound for summer and for winter 
@@ -7,7 +9,7 @@ PImage sBack;
 PImage sun;
 float sunAngle;
 SoundFile beachSound, birdS;
-boolean  summerSound= true;
+boolean  summerSound= true,bravoSound = true;
 
 
 // Winter variables
@@ -19,7 +21,7 @@ boolean winterSound = true;
 // Bird and pipes variables
 PFont f;
 PImage bg, bird, bottom_pipe, top_pipe;
-int bgx, bgy, kx, ky, vky, g, score, pipe_speed, step, word_height;
+int bgx, bgy, kx, ky, vky, g, score, prescore, pipe_speed, word_height;
 // kx and ky are coordinates  of the birds 
 // g is the gravity 
 // bg: background 
@@ -28,7 +30,9 @@ float[] pipeX, pipeY; // two arrays for pipes
 int game_state;
 void setup() {
   size(1000, 825);
-  
+  background(0);
+  textSize(60);
+  text("Loading...", 350, 400);
   // sounds 
   jumpSound = new SoundFile(this, "../sound/jumpy.mp3");
   hit = new SoundFile(this, "../sound/gameover.mp3");
@@ -48,11 +52,10 @@ void setup() {
 
   // initialize values for bird and pipes
   pipe_speed = 2;
-  kx = 100;
-  ky = 50;
-  g = 1;
+  kx = 100; // x position of the bird
+  ky = 50;  // y position of the bird
+  g = 1;    // how fast the birds falls
   game_state = -1;
-  step = 1;
   word_height = 55;
   pipeX = new float[5];
   pipeY = new float[pipeX.length];
@@ -60,7 +63,7 @@ void setup() {
   // assign coordinates for every pipe
   for (int i = 0; i < pipeX.length; i++ ) {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
-    pipeY[i] = (int)random(-300, 0);
+    pipeY[i] = (int)random(-400, -100);
   }
   
   // assgin Winter Varibales
@@ -68,26 +71,27 @@ void setup() {
   winter_bg= loadImage("../images/winterBackround.png");
   snow = loadImage("../images/snow.png");
   snowSound = new SoundFile(this, "../sound/snow.mp3");
- 
+  snowSound.amp(0.5); //decreasing winter sound
 
   snowY = new float[20];
-  snowX= new float[20];
+  snowX = new float[20];
 
   // assign different y coordinates for snow
-  for (int i=0; i<20; i++) {
+  for (int i = 0; i < 20 ; i++) {
     snowY[i] = random(0, height);
   }
 
   // assign x coordinates for snow 
-  snowX[0] =5;
-  for (int i=1; i<=19; i++) {
-    snowX[i]= snowX[i-1]+50;
+  snowX[0] = 5;
+  for (int i = 1; i <= 19 ; i++) {
+    snowX[i] = snowX[i-1] + 50;
   }
   
   // assign Summer variables
   birdS = new SoundFile(this, "../sound/bird.mp3");
   beachSound = new SoundFile(this, "../sound/beach.mp3");
   beachSound.amp(0.5);  // decrease the voice of beach
+  
   
   sBack = loadImage("../images/summerBack.png");  
   sun = loadImage("../images/sun3.png");
@@ -96,57 +100,59 @@ void setup() {
 }
 
 void draw() {
-
-  if (game_state == -1) {
-    start_screen();
-  } else if (game_state == 0) {
-    // function to say bravo 3aleek
-    set_background(bg);
-    set_pipes();
-    bird();
-    set_score();
-    bravo();
-  } else if (game_state == 2) {
-    soundState =1;
-    if (soundState ==1 && winterSound == true) {
-      snowSound.play(); 
-      winterSound = false;
-    }  
-    set_background(winter_bg);
-    set_pipes();
-    bird();
-    set_score();
-    bravo();
-    callWinter();
-    
-  } else if (game_state == 3) {
-
-    soundState = 2;
-    if (soundState == 2 && summerSound == true) {
-      beachSound.play();
-      birdS.play();  
-      summerSound = false;
-    }
-
   
-    pushMatrix();
-    set_background(sBack);
-    bird();
-    callSummer();
-    popMatrix();
-    set_pipes();
-    set_score();
-    bravo();
-  } else if (game_state == 4) {
-    show_levels();
-  } else if (game_state == 5) {
-    show_rules();
-  } else if (game_state == 6) {
-    show_modes();
-  } else {
-    gameOver();
-    hit.stop();
-    bravo.stop();
+  switch(game_state){
+    case -1: // the state of the start screen  
+      start_screen();
+      break;
+    case 0: // the case of basic game
+      set_background(bg);
+      set_pipes();
+      bird();
+      set_score();
+      bravo(); // function to say bravo 3aleek
+      break;
+    case 2: // the case of winter state
+      soundState = 1;
+      if (soundState == 1 && winterSound == true) {
+        snowSound.play(); 
+        winterSound = false;
+      }  
+      set_background(winter_bg);
+      set_pipes();  //display pipes
+      bird();       //display bird
+      set_score();  // display current score
+      bravo();      // function to say bravo 3aleek
+      callWinter(); // for the sonw special effect of rotation and random movement
+      break;
+    case 3:
+      soundState = 2;
+      if (soundState == 2 && summerSound == true) {
+        beachSound.play();
+        birdS.play();  
+        summerSound = false;
+      }
+      set_background(sBack);
+      callSummer();   // for the sun special effect of rotation
+      set_pipes();    // draw the pipes  
+      bird();         //display bird
+      set_score();    // draw the score
+      bravo();// function to say bravo 3aleek
+      break;
+    case 4: 
+      show_levels();
+      break;
+    case 5:
+      show_rules();
+      break;
+    case 6:
+      show_modes();
+      break;
+    default:
+      gameOver();
+      hit.stop();
+      bravo.stop();
+      break;
   }
 }
 
@@ -206,48 +212,46 @@ void start_screen() {
 }
 
 void show_levels() {
+  int shift = 100;
   image(bg, 0, 0);
   textSize(40);
   fill(255);
   text("Welcome to Flappy Bird!", 150, 100);
-  text("Easy", 420, 300);
-  text("Medium", 420, 500);
-  text("Hard", 420, 700);
+  text("Easy",   420 + shift, 300);
+  text("Medium", 420 + shift, 500);
+  text("Hard",   420 + shift, 700);
   text("Back", 150, 700);
 
-  if (mouseX > 420 && mouseX < 420+110 && mouseY > 250 && mouseY < 250+word_height) {
+  if (mouseX > 420 + shift && mouseX < 420 + 110 + shift && mouseY > 250 && mouseY < 250+word_height) {
     fill(102, 178, 255);
-    text("Easy", 420, 300);
+    text("Easy", 420 + shift, 300);
     if (mousePressed) {
       pipe_speed = 2;
-      step = 2;
       ky = height /2;
       kx = 50 ;
-      game_state = 0;
+      game_state = -1;
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+215 && mouseY > 450 && mouseY < 450+word_height) {
+  if (mouseX > 420 + shift&& mouseX < 420 + 215 + shift&& mouseY > 450 && mouseY < 450+word_height) {
     fill(102, 178, 255);
-    text("Medium", 420, 500);
+    text("Medium", 420 + shift, 500);
     if (mousePressed) {
-      pipe_speed =4 ;
-      step = 2;
+      pipe_speed = 4;
       ky = height /2;
       kx = 50 ;
-      game_state = 0;
+      game_state = -1;
     }
   }
 
-  if (mouseX > 420 && mouseX < 420+135 && mouseY > 650 && mouseY < 650+word_height) {
+  if (mouseX > 420 + shift&& mouseX < 420 + 135 + shift && mouseY > 650 && mouseY < 650+word_height) {
     fill(102, 178, 255);
-    text("Hard", 420, 700);
+    text("Hard", 420 + shift, 700);
     if (mousePressed) {
-      pipe_speed = 5;
-      step = 2;
+      pipe_speed = 7;
       ky = height /2;
       kx = 50 ;
-      game_state = 0;
+      game_state = -1;
     }
   }
 
@@ -274,7 +278,6 @@ void show_modes() {
     text("Winter", 420, 400);
     if (mousePressed) {
       game_state = 2; // Winter Mode
-      pipe_speed = 2;
       ky = height /2;
       kx = 50 ;
     }
@@ -284,7 +287,6 @@ void show_modes() {
     fill(102, 178, 255);
     text("Summer", 420, 600);
     if (mousePressed) {
-      pipe_speed = 2;
       ky = height /2;
       kx = 50 ;
       game_state = 3; // Summer Mode
@@ -331,18 +333,21 @@ void bird() {
   /* i make two equation becuase Vky will change when i
    press the mouse but g still constant an the total sum of g and Vky 
    will be added to the vertical cordinate of y-axis*/
-  ky = ky + vky;
-  vky = vky + g;
+  ky += vky;
+  vky +=  g;
   if (ky > height || ky < 0) {
-    gameOver();
     game_state = 1;
   }
+  
+ /* for (int i = 0; i < pipeX.length; i++ ) {
+   
+  }*/
 }
 
 void mousePressed() {
   //function is called once after every time a mouse button is pressed.
   vky = -13;
-  jumpSound.play();
+  if(game_state != 1 && game_state > -1 && game_state < 4) jumpSound.play();
 }
 
 void set_background(PImage image) {
@@ -357,26 +362,25 @@ void set_background(PImage image) {
 void set_pipes() {
   for (int i = 0; i < pipeX.length; i++ ) {
     // Draw the pipes
-
     image(top_pipe, pipeX[i], pipeY[i]);
     image(bottom_pipe, pipeX[i], pipeY[i]+800);
 
     // let the pipes move toward the bird
-
     pipeX[i] -= pipe_speed; //speed of pipes
     // redraw the pipes again
     if (pipeX[i] < -200) {
       pipeX[i] = width;
     }
     // check for collision
-    if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
-      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (top_pipe.height +800 - top_pipe.height-bird.height))) {
+   if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
+      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (800 - bird.height))) {
         hit.play();
         game_state = 1;
-      } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
+      } 
+      else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
         score += 1;
       }
-    }
+    }  
   }
 }
 
@@ -403,17 +407,20 @@ void callSummer(){
   image(sun, -50, -50, 100, 100);
   sunAngle = sunAngle + 0.02;
   popMatrix();
-  
 }
 
 void gameOver() {
+  if(!winterSound){
+    snowSound.pause(); 
+  }
+  if(!summerSound){
+    beachSound.pause();  
+    birdS.pause();
+  }
   winterSound = true;
   summerSound = true;
   soundState =0;
-  snowSound.pause(); 
-  beachSound.pause();  
-  birdS.pause();
-
+  
   stroke(5);
   fill (247, 114, 114);
   text("Game Over!", 350, 300);
@@ -463,7 +470,10 @@ void set_score() {
   text("Score : " + score, 25, 50);
 }
 void bravo(){
-    if (score % 5 != 0) {
-      bravo.loop();
+  if(score - prescore > 0)bravoSound = true;
+  prescore = score;
+    if (score != 0 && bravoSound == true && score % 5 == 0) {
+      bravo.play();
+      bravoSound = false;
     }
 }
