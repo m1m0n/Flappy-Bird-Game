@@ -40,7 +40,7 @@ void setup() {
   bg = loadImage("../images/trial.png");
   bird = loadImage("../images/bird.png");
   bottom_pipe = loadImage("../images/bottom_pipeNewCropped.png");
-  top_pipe = loadImage("../images/top_pipeNewCropped .png");
+  top_pipe = loadImage("../images/top_pipeNewCropped.png");
 
 
 
