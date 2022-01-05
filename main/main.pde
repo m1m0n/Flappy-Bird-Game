@@ -364,7 +364,7 @@ void set_pipes() {
     }
     // check for collision
     if (kx > (pipeX[i]-bird.width) && kx < pipeX[i] + bottom_pipe.width) {
-      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (800 - 2*bird.height))) {
+      if (!(ky > pipeY[i] + top_pipe.height && ky < pipeY[i] + (750 - bird.height))) {
         hit.play();
         game_state = 1;
       } else if (kx == pipeX[i] || kx == pipeX[i]+(pipe_speed/2)) {
@@ -448,7 +448,7 @@ void restart() {
 
   for (int i = 0; i < pipeX.length; i++ ) {
     pipeX[i] = (width/2)+  250 *i; // adding width/2 to make pipes starts to appear from the mid of the x axis
-    pipeY[i] = (int)random(-300, 0);
+    pipeY[i] = (int)random(-400, -200);
   }
 }
 
